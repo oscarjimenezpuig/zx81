@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.c
   Creado: 18-10-2025
-  Ultima Modificacion: diumenge, 19 d’octubre de 2025, 20:52:19
+  Ultima Modificacion: dilluns, 20 d’octubre de 2025, 19:23:27
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -15,9 +15,10 @@
 #include "zxou.h"
 
 void z_cls() {
-	byte* ptr=memory;
-	while(ptr!=memory+DMEM) *ptr++=0;
+	byte* ptr=memory+OSCR;
+	while(ptr!=memory+OSCR+DSCR) *ptr++=0;
 	memory[CURSX]=memory[CURSY]=0;
+
 }
 
 void z_gdu(byte n,byte a,byte b,byte c,byte d,byte e,byte f,byte g,byte h) {
@@ -89,9 +90,7 @@ void z_mode(byte m) {
 	byte* pc=memory+CURSX;
 	byte x=(*pc++)/8;
 	byte y=*pc/8;
-	printf("%i,%i\n",x,y);//dbg
 	byte* pinv=memory+OINV+(x/8)+y*LCI;
-	printf("%i %li\n",DMEM,pinv-memory+OINV);//DBG
 	byte iflag=128>>(x%8);
 	byte flag=0;
 	while(iflag!=0) {
@@ -180,9 +179,9 @@ double z_sin(double a) {
 //prueba
 
 void program() {
-	z_locate(10,10);
+	z_cls();
 	z_mode(INVERSE);
-	z_printc('B');
+	z_prints("Bodrio");
 	output();
 wait:
 	input();

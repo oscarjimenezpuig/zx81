@@ -2,7 +2,7 @@
 ============================================================
   Fichero: memory.c
   Creado: 18-10-2025
-  Ultima Modificacion: diumenge, 19 d’octubre de 2025, 20:36:22
+  Ultima Modificacion: dilluns, 20 d’octubre de 2025, 19:05:37
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -239,7 +239,7 @@ static void char_output(byte x,byte y) {
 	} else if(flag==0) flag=128;
 	byte mode=(*pinv & flag);
 	flag=flag>>1;
-	pinv++;
+	if(flag==0) pinv++;
 	byte* ppix=memory+OSCR+x+y*8*SCRWC;
 	byte px=x*8;
 	byte py=y*8;
@@ -258,8 +258,8 @@ static void char_output(byte x,byte y) {
 }
 
 void output() {
-	for(byte x=0;x<SCRWC;x++) {
-		for(byte y=0;y<SCRHC;y++) {
+	for(byte y=0;y<SCRHC;y++) {
+		for(byte x=0;x<SCRWC;x++) {
 			char_output(x,y);
 		}
 	}

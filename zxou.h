@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.h
   Creado: 18-10-2025
-  Ultima Modificacion: diumenge, 19 d’octubre de 2025, 20:26:42
+  Ultima Modificacion: dilluns, 20 d’octubre de 2025, 19:23:27
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
