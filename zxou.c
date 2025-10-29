@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.c
   Creado: 18-10-2025
-  Ultima Modificacion: dilluns, 20 d’octubre de 2025, 19:23:27
+  Ultima Modificacion: dimecres, 29 d’octubre de 2025, 05:24:47
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -13,6 +13,26 @@
 #include <math.h>
 
 #include "zxou.h"
+
+static void cpoc(double cx,double cy,double r,double a,byte* x,byte* y) {
+	const double PI=3.1415926532;
+	double sin=z_sin(a*PI/180);
+	double cos=z_power(1-z_power(sin,2),0.5);
+	double dx=cx+r*cos;
+	double dy=cy+r*sin;
+	*x=(byte)dx;
+	*y=(byte)dy;
+}
+
+void z_circle(byte cx,byte cy,byte r) {
+	for(int g=0;g<360;g++) {
+		byte xi,yi,xf,yf;
+		cpoc(cx,cy,r,g,&xi,&yi);
+		cpoc(cx,cy,r,g+1,&xf,&yf);
+		printf("%i,%i->%i,%i\n",xi,yi,xf,yf);//dbg
+		z_line(xi,yi,xf,yf);
+	}
+}
 
 void z_cls() {
 	byte* ptr=memory+OSCR;
@@ -45,37 +65,39 @@ static void swap(short* a,short* b) {
 }
 
 void z_line(byte x1,byte y1,byte x2,byte y2) {
-	short dx,dy,incxi,incyi,incxr,incyr;
-	dy=(y2-y1);
-	dx=(x2-x1);
-	incxi=incyi=-1;
-	incxr=incyr=0;
-	if(dy>=0) incyi=1;
-	else dy=-dy;
-	if(dx>=0) incxi=1;
-	else dx=-dx;
-	if(dx>=dy) incxr=incxi;
-	else {
-		incyr=incyi;
-		swap(&dx,&dy);
-	}
-	int x=x1;
-	int y=y1;
-	int avr=2*dy;
-	int av=(avr-dx);
-	int avi=(av-dx);
-	do {
-		z_plot(x,y);
-		if(av>=0) {
-			x+=incxi;
-			y+=incyi;
-			av+=avi;
-		} else {
-			x+=incxr;
-			y+=incyr;
-			av+=avr;
+	if(x1!=x2 || y1!=y2) {
+		short dx,dy,incxi,incyi,incxr,incyr;
+		dy=(y2-y1);
+		dx=(x2-x1);
+		incxi=incyi=-1;
+		incxr=incyr=0;
+		if(dy>=0) incyi=1;
+		else dy=-dy;
+		if(dx>=0) incxi=1;
+		else dx=-dx;
+		if(dx>=dy) incxr=incxi;
+		else {
+			incyr=incyi;
+			swap(&dx,&dy);
 		}
-	} while(x!=x2 || y!=y2);
+		int x=x1;
+		int y=y1;
+		int avr=2*dy;
+		int av=(avr-dx);
+		int avi=(av-dx);
+		do {
+			z_plot(x,y);
+			if(av>=0) {
+				x+=incxi;
+				y+=incyi;
+				av+=avi;
+			} else {
+				x+=incxr;
+				y+=incyr;
+				av+=avr;
+			}
+		} while(x!=x2 || y!=y2);
+	}
 	z_plot(x2,y2);
 }
 
@@ -179,9 +201,7 @@ double z_sin(double a) {
 //prueba
 
 void program() {
-	z_cls();
-	z_mode(INVERSE);
-	z_prints("Bodrio");
+	z_circle(100,100,50);
 	output();
 wait:
 	input();

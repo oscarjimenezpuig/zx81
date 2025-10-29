@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.h
   Creado: 18-10-2025
-  Ultima Modificacion: dilluns, 20 d’octubre de 2025, 19:23:27
+  Ultima Modificacion: dimecres, 29 d’octubre de 2025, 05:00:26
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -16,6 +16,9 @@
 
 #define CURSX (OROM) //direccion de memoria donde se guarda el cursor x
 #define CURSY (OROM+1) //direccion de memoria donde se guarda el cursor y
+
+void z_circle(byte cx,byte cy,byte radium);
+//dibuja un circulo centrado en cx,cy con radio radium
 
 void z_cls();
 //limpiamos la memoria, se coloca el mode en normal y el cursor en el origen (el modo se mantiene)
