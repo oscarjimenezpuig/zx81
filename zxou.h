@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.h
   Creado: 18-10-2025
-  Ultima Modificacion: dimecres, 29 d’octubre de 2025, 05:00:26
+  Ultima Modificacion: dimecres, 29 d’octubre de 2025, 20:37:55
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -16,6 +16,28 @@
 
 #define CURSX (OROM) //direccion de memoria donde se guarda el cursor x
 #define CURSY (OROM+1) //direccion de memoria donde se guarda el cursor y
+
+//METODOS (ordenes que se podran utilizar directamente)
+//no estan presentes, pero se pueden utilizar todas las funciones matematicas
+
+#define circle(X,Y,R) z_circle((X),(Y),(R))
+#define cls z_cls()
+#define gdu(I,A,B,C,D,E,F,G,H) z_gdu((I),(A),(B),(C),(D),(E),(F),(G),(H))
+#define inkey(C) z_inkey((C))
+#define line(A,B,C,D) z_line((A),(B),(C),(D))
+#define locate(X,Y) z_locate((X),(Y))
+#define normal z_mode(NORMAL)
+#define inverse z_mode(INVERSE)
+#define pause(S) z_pause((S))
+#define peek(D) memory[(D)] //consigue el valor de la direccion de memoria D
+#define plot(X,Y) z_plot((X),(Y))
+#define poke(D,V) memory[(D)]=(V) //asigna a la direccion D el valor V
+#define point(D) memory+(D) //puntero a la direccion de memoria D
+#define printc(C) z_printc((C))
+#define printn(N) z_printn((N))
+#define prints(S) z_prints((S))
+#define randomize(S) z_randomize((S))
+#define rnd(A,B) z_rnd((A),(B))
 
 void z_circle(byte cx,byte cy,byte radium);
 //dibuja un circulo centrado en cx,cy con radio radium
@@ -43,9 +65,6 @@ void z_pause(double seconds);
 
 void z_plot(byte x,byte y);
 //dibuja el punto en una posicion de la pantalla
-
-double z_power(double base,double exponent);
-//calcula la potencia de base elevado a exponente
 
 void z_printc(byte chr);
 //impresion de un caracter
