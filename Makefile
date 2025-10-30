@@ -82,6 +82,6 @@ check:
 #MAKEFILE VARIABLE
 
 NAME = zxou 
-SCRS = memory.c zxou.c
+SCRS = zxou.c prueba.c
 INCLUDES = -lX11
 
