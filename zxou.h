@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.h
   Creado: 18-10-2025
-  Ultima Modificacion: jue 30 oct 2025 11:24:57
+  Ultima Modificacion: diumenge, 2 de novembre de 2025, 08:22:36
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -75,6 +75,7 @@ void m_input();
 
 #define circle(X,Y,R) z_circle((X),(Y),(R))
 #define cls z_cls()
+#define flip(D,O) z_flip((D),(O))
 #define gdu(I,A,B,C,D,E,F,G,H) z_gdu((I),(A),(B),(C),(D),(E),(F),(G),(H))
 #define inkey(C) z_inkey((C))
 #define line(A,B,C,D) z_line((A),(B),(C),(D))
@@ -90,6 +91,7 @@ void m_input();
 #define printn(N) z_printn((N))
 #define prints(S) z_prints((S))
 #define randomize(S) z_randomize((S))
+#define reverse(D,O) z_reverse((D),(O))
 #define rnd(A,B) z_rnd((A),(B))
 #define show m_output()
 #define listen m_input()
@@ -101,6 +103,9 @@ void z_circle(byte cx,byte cy,byte radium);
 
 void z_cls();
 //limpiamos la memoria, se coloca el mode en normal y el cursor en el origen (el modo se mantiene)
+
+byte z_flip(byte gdu_destiny,byte gdu_origin);
+//hace una simetria vertical del origin y lo guarda en el destiny. Devuelve el destiny.
 
 void z_gdu(byte code,byte a,byte b,byte c,byte d,byte e,byte f,byte g,byte h);
 //definicion de un gdu en el caracter c
@@ -134,6 +139,9 @@ void z_printn(double num);
 
 void z_randomize(int a);
 //establecimiento de la semilla del numero aleatorio, si a negativa, en funcion del tiempo
+
+byte z_reverse(byte gdu_destiny,byte gdu_origin);
+//hace una simetria horizontal del origin y la deposita en el destiny. Devuelve el destiny.
 
 int z_rnd(int a,int b);
 //nuemero aleatorio entre dos valores dados

@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.c
   Creado: 18-10-2025
-  Ultima Modificacion: jue 30 oct 2025 11:26:45
+  Ultima Modificacion: diumenge, 2 de novembre de 2025, 08:41:05
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -408,6 +408,23 @@ void z_cls() {
 
 }
 
+byte z_flip(byte d,byte o) {
+	byte *pto,*ini,*ptd;
+	pto=ini=memory+(OASC+o*8);
+	ptd=memory+(OASC+d*8);
+	while(pto!=ini+8) {
+		for(byte k=1;k!=0;k=k<<1) {
+			if(*pto & k) {
+				byte c=128/k;
+				*ptd|=c;
+			}
+		}
+		pto++;
+		ptd++;
+	}
+	return d;
+}
+
 void z_gdu(byte n,byte a,byte b,byte c,byte d,byte e,byte f,byte g,byte h) {
 	byte data[]={a,b,c,d,e,f,g,h};
 	byte *ptr,*ini,*pda;
@@ -417,6 +434,7 @@ void z_gdu(byte n,byte a,byte b,byte c,byte d,byte e,byte f,byte g,byte h) {
 }
 
 byte z_inkey(char k) {
+	k=(k>='A' && k<='Z')?k-'A'+'a':k;
 	byte* p=memory+OKEY;
 	while(p!=memory+OKEY+DKEY) {
 		if(*p==k) return 1;
@@ -515,7 +533,17 @@ void z_printn(double num) {
 void z_randomize(int v) {
 	unsigned int seed=(v>0)?v:time(NULL);
 	srand(seed);
-}	
+}
+
+byte z_reverse(byte d,byte o) {
+	byte *pto,*ini,*ptd;
+	pto=ini=memory+(OASC+o*8);
+	ptd=memory+(OASC+(d+1)*8-1);
+	while(pto!=ini+8) {
+		*ptd--=*pto++;
+	}
+	return d;
+}
 
 int z_rnd(int a,int b) {
 	int max=(a>b)?a:b;
