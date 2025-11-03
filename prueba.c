@@ -2,7 +2,7 @@
 ============================================================
   Fichero: prueba.c
   Creado: 30-10-2025
-  Ultima Modificacion: diumenge, 2 de novembre de 2025, 12:29:45
+  Ultima Modificacion: dilluns, 3 de novembre de 2025, 05:29:47
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -25,6 +25,14 @@
 #define GFLEN 142
 #define GFLEF 143
 #define GVAMP 144
+#define GMAND 146
+#define GMANW 147
+
+#define obsget(X,Y) obstaculo[(X)+(Y)*SCRWC] //mira si hay obstaculo en la posicion
+#define buginsu (obsget(bugabo.x,bugabo.y+1)==1) //dice si el bugabo esta en el suelo
+#define velinv(V) ((V)>0)?(-(V)+1):((V)<0)?(-(V)-1):0
+#define sgn(A) (((A)>0)?1:((A)<0)?-1:0)
+#define colision(A,B) ((A.x)==(B.x) && (A.y)==(B.y))
 
 typedef byte u1;
 
@@ -89,6 +97,8 @@ void gdu_init() {
 	flip(GFLEF,GFLEN);
 	gdu(GVAMP,36,153,90,60,24,36,66,165);
 	gdu(GVAMP+1,36,24,24,126,153,36,66,165);
+	gdu(GMAND,16,56,16,16,16,1,159,223);
+	gdu(GMANW,90,90,66,60,24,36,36,36);
 	for(byte k=0;k<3;k++) flip(GMANF+k,GMANN+k);
 }
 
@@ -166,10 +176,6 @@ void screen_init() {
 	obstaculo_print();//dbg
 }
 
-#define obsget(X,Y) obstaculo[(X)+(Y)*SCRWC] //mira si hay obstaculo en la posicion
-#define buginsu (obsget(bugabo.x,bugabo.y+1)==1) //dice si el bugabo esta en el suelo
-#define velinv(V) ((V)>0)?(-(V)+1):((V)<0)?(-(V)-1):0
-#define sgn(A) (((A)>0)?1:((A)<0)?-1:0)
 
 void moneda_init() {
 	const u1 MAX_DELAY=7;
@@ -208,9 +214,11 @@ void moneda_move() {
 }
 
 void moneda_coge() {
-	if(bugabo.x==moneda.x && bugabo.y==moneda.y) {
+	if(colision(bugabo,moneda)) {
 		bugabo.monedas++;
-		moneda_quita(bugabo.gdu+(bugabo.gin/3));
+		moneda_quita(GMANW);
+		show;
+		pause(0.5);
 		moneda_init();
 	}
 }
@@ -263,10 +271,10 @@ void flecha_move() {
 }
 
 void flecha_colisiona() {
-	if(flecha.x==bugabo.x && flecha.y==bugabo.y) {
+	if(colision(flecha,bugabo)) {
 		bugabo.vivo=0;
 	}
-	if(flecha.x==moneda.x && flecha.y==moneda.y) {
+	if(colision(flecha,moneda)) {
 		moneda_quita(flecha.gdu);
 		moneda_init();
 	}
@@ -301,17 +309,15 @@ void vamp_move() {
 		vamp.fx=rnd(1,30);
 		vamp.fy=rnd(1,30);
 		vamp.dx=vamp.dy=0;
-	} 
-	if(vamp.fx==vamp.x || vamp.fy==vamp.y || (vamp.dx==0 && vamp.dy==0)) {
-		if(vamp.fx!=vamp.x && vamp.fy==vamp.y) {
-			vamp.dx=(vamp.fx>vamp.x)?1:-1;
-		} else if(vamp.fx==vamp.x && vamp.fy!=vamp.y) {
-			vamp.dy=(vamp.fy>vamp.y)?1:-1;
-		} else if(rnd(0,1)) {
-			vamp.dx=(vamp.fx>vamp.x)?1:-1;
-		} else {
-			vamp.dy=(vamp.fy>vamp.y)?1:-1;
-		}
+	}
+	if(vamp.fx!=vamp.x && vamp.fy==vamp.y) {
+		vamp.dx=(vamp.fx>vamp.x)?1:-1;
+	} else if(vamp.fx==vamp.x && vamp.fy!=vamp.y) {
+		vamp.dy=(vamp.fy>vamp.y)?1:-1;
+	} else if(rnd(0,1)) {
+		vamp.dx=(vamp.fx>vamp.x)?1:-1;
+	} else {
+		vamp.dy=(vamp.fy>vamp.y)?1:-1;
 	}
 	if(vamp.delay==vamp.max_delay) {
 		if(vamp.tras==vamp.max_tras) {
@@ -337,10 +343,19 @@ void vamp_move() {
 	} else vamp.delay++;
 }
 
+
 void vamp_colisiona() {
-	if((vamp.x==flecha.x && vamp.y==flecha.y) || (vamp.x==idol.x && vamp.y==idol.y) || (vamp.x==moneda.x && vamp.y==moneda.y)) {
+	if(colision(vamp,flecha)) {
 		vamp_quita();
 		vamp_init();
+	}
+	if(colision(vamp,idol)) {
+		idol_quita();
+		idol_init();
+	}
+	if(colision(vamp,moneda)) {
+		moneda_quita(vamp.gdu);
+		moneda_init();
 	}
 }
 
@@ -368,7 +383,7 @@ u1 bugabo_can_move() {
 			bugabo.delay=0;
 			return 1;
 		} else bugabo.delay++;
-	}
+	} 
 	return 0;
 }
 
@@ -431,6 +446,29 @@ void bugabo_inkey() {
 	}
 };
 
+u1 game_over() {
+	if(bugabo.vivo==0) {
+		locate(bugabo.x,bugabo.y);
+		printc(GMAND);
+		show;
+		pause(1);
+		locate(11,16);
+		inverse;
+		prints("GAME OVER");
+		normal;
+		show;
+		pause(3);
+		return 1;
+	}
+	return 0;
+}
+
+void marcador() {
+	locate(0,0);
+	prints("COINS ");
+	printn(bugabo.monedas);
+}
+
 begin_program
 	gdu_init();
 	screen_init();
@@ -438,8 +476,9 @@ begin_program
 	moneda_init();
 	idol_init();
 	vamp_init();
+	marcador();
 	show;
-	while(inkey('q')==0) {	
+	while(inkey('q')==0 && !game_over()) {	
 		listen;
 		bugabo_inkey();
 		bugabo_move();
@@ -449,6 +488,7 @@ begin_program
 		moneda_coge();
 		flecha_colisiona();
 		vamp_colisiona();
+		marcador();
 		show;
 		pause(0.01);
 	}
