@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.c
   Creado: 18-10-2025
-  Ultima Modificacion: diumenge, 2 de novembre de 2025, 08:41:05
+  Ultima Modificacion: dimecres, 5 de novembre de 2025, 05:19:02
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -380,7 +380,7 @@ static void dpas(int cx,int cy,int x,int y) {
 	int* px=cxs;
 	int* py=cys;
 	for(byte k=0;k<4;k++) {
-		if(*px>=0 && *py>=0) z_plot(*px,*py);
+		if(*px>=0 && *py>=0) z_plot(*px,*py,1);
 		px++;
 		py++;
 	}
@@ -444,11 +444,11 @@ byte z_inkey(char k) {
 }
 
 void z_line(byte x1,byte y1,byte x2,byte y2) {
-	z_plot(x2,y2);
+	z_plot(x2,y2,1);
 	if(x1!=x2 || y1!=y2) {
 		Bresenhan b=bresnew(x1,y1,x2,y2);
 		do {
-			z_plot(b.x,b.y);
+			z_plot(b.x,b.y,1);
 		} while(bresget(&b));
 	}
 }
@@ -486,11 +486,19 @@ void z_pause(double s) {
 	while(clock()<lim);
 }
 
-void z_plot(byte x,byte y) {
+void z_plot(byte x,byte y,byte on) {
 	byte q=x/8;
 	byte r=x%8;
 	byte* dir=memory+OSCR+y*(SCRWP/8)+q;
-	*dir|=(128>>r);
+	if(on) *dir|=(128>>r);
+	else *dir&=~(128>>r);
+}
+
+byte z_plotted(byte x,byte y) {
+	byte q=x/8;
+	byte r=x%8;
+	byte* dir=memory+OSCR+y*(SCRWP/8)+q;
+	return (*dir & (128>>r));
 }
 
 void z_printc(byte chr) {
@@ -552,3 +560,9 @@ int z_rnd(int a,int b) {
 	return min+(rand()%dif);
 }
 
+double z_time(byte start) {
+	static clock_t tic=0;
+	if(start) tic=clock();
+	clock_t dif=clock()-tic;
+	return dif/CLOCKS_PER_SEC;
+}

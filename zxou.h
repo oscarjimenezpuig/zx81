@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.h
   Creado: 18-10-2025
-  Ultima Modificacion: diumenge, 2 de novembre de 2025, 08:22:36
+  Ultima Modificacion: dimecres, 5 de novembre de 2025, 05:20:37
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -84,15 +84,19 @@ void m_input();
 #define inverse z_mode(INVERSE)
 #define pause(S) z_pause((S))
 #define peek(D) memory[(D)] //consigue el valor de la direccion de memoria D
-#define plot(X,Y) z_plot((X),(Y))
+#define plot(X,Y) z_plot((X),(Y),1)
+#define plotted(X,Y) z_plotted((X),(Y))
 #define poke(D,V) memory[(D)]=(V) //asigna a la direccion D el valor V
-#define point(D) memory+(D) //puntero a la direccion de memoria D
+#define pointer(D) memory+(D) //puntero a la direccion de memoria D
 #define printc(C) z_printc((C))
 #define printn(N) z_printn((N))
 #define prints(S) z_prints((S))
 #define randomize(S) z_randomize((S))
 #define reverse(D,O) z_reverse((D),(O))
 #define rnd(A,B) z_rnd((A),(B))
+#define times z_time(1) //inicia el crono
+#define timeg z_time(0) //da el tiempo del crono
+#define unplot(X,Y) z_plot((X),(Y),0)
 #define show m_output()
 #define listen m_input()
 #define begin_program void z_program() {
@@ -125,8 +129,11 @@ void z_mode(byte m);
 void z_pause(double seconds);
 //hacer una pausa de un determinado numero de segundos
 
-void z_plot(byte x,byte y);
-//dibuja el punto en una posicion de la pantalla
+void z_plot(byte x,byte y,byte on);
+//dibuja/quita el punto en una posicion de la pantalla
+
+byte z_plotted(byte x,byte y);
+//dice el estado de un punto de la pantalla
 
 void z_printc(byte chr);
 //impresion de un caracter
@@ -146,8 +153,8 @@ byte z_reverse(byte gdu_destiny,byte gdu_origin);
 int z_rnd(int a,int b);
 //nuemero aleatorio entre dos valores dados
 
-double z_sin(double angle);
-//calculo del seno de un angulo en radianes
+double z_time(byte start);
+//da el valor del tiempo desde el momento que empieza el start.
 
 void z_program();
 //aqui se introduciran todas las instrucciones del programa
