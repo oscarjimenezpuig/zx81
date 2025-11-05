@@ -81,7 +81,7 @@ check:
 
 #MAKEFILE VARIABLE
 
-NAME = temple
-SCRS = zxou.c temple.c
+NAME = prueba
+SCRS = zxou.c prueba.c
 INCLUDES = -lX11
 
