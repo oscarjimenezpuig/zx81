@@ -2,7 +2,7 @@
 ============================================================
   Fichero: prueba.c
   Creado: 05-11-2025
-  Ultima Modificacion: mié 05 nov 2025 12:24:12
+  Ultima Modificacion: dimecres, 5 de novembre de 2025, 20:24:15
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -13,15 +13,10 @@
 
 #include "zxou.h"
 
-#define AND 1
-#define OR 2
-#define XOR 3
-#define EXC 4 //no tiene en cuenta el valor previo de la posicion
-
 #define inscrx (px>=0 && px<SCRWP)
 #define inscry (py>=0 && py<SCRHP)
 
-void pacip(byte chr,byte operation,int x,int y) {
+void pacip(byte chr,int x,int y) {
 	//coloca un caracter en cualquier posicion de la pantalla
 	byte *ptc,*init;
 	init=ptc=pointer(OASC+8*chr);
@@ -33,26 +28,13 @@ void pacip(byte chr,byte operation,int x,int y) {
 			for(byte f=128;f>=1;f=f>>1) {
 				if(inscrx) {
 					byte val=(*ptc & f);
-					if(operation!=EXC) {
-						byte vip=plotted(px,py);
-						switch(operation) {
-							case AND:
-								val=val & vip;
-								break;
-							case OR:
-								val=val | vip;
-								break;
-							default:
-								val=val ^ vip;
-						}
-						if(val) plot(px,py);
-						else unplot(px,py);
-					}
+					if(val || plotted(px,py)) plot(px,py);
+					else unplot(px,py);
 				}
 				px++;
 			}
-			py++;
 		}
+		py++;
 		ptc++;
 	}
 }
@@ -72,10 +54,10 @@ void move_gdu() {
 	else if(inkey('l')) ghostx+=ADV;
 }
 
-begin_program
+begin
 	gdu_def();
 	while(inkey('q')==0) {
-		pacip(128,OR,ghostx,ghosty);
+		pacip(128,ghostx,ghosty);
 		line(0,0,255,255);
 		show;
 		pause(0.01);
@@ -83,7 +65,7 @@ begin_program
 		listen;
 		move_gdu();
 	}
-end_program
+end
 				
 		
 

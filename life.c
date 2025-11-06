@@ -2,7 +2,7 @@
 ============================================================
   Fichero: life.c
   Creado: 03-11-2025
-  Ultima Modificacion: dilluns, 3 de novembre de 2025, 20:54:08
+  Ultima Modificacion: dimecres, 5 de novembre de 2025, 18:32:38
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -107,7 +107,7 @@ void cell_random(byte* w,int cells) {
 #define INICIALES 100 //numero de celdas iniciales repartidas aleatoriamente
 #define PAUSA .5 //pausa entre cada generacion
 					
-begin_program
+begin
 	randomize(-1);
 	gdu_init();
 	byte world[AWORLD];
@@ -128,7 +128,7 @@ begin_program
 		cell_move(world,cworld);
 		listen;
 	}
-end_program
+end
 
 	
 	

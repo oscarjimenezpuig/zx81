@@ -2,7 +2,7 @@
 ============================================================
   Fichero: temple.c
   Creado: 05-11-2025
-  Ultima Modificacion: dimecres, 5 de novembre de 2025, 05:00:17
+  Ultima Modificacion: dimecres, 5 de novembre de 2025, 18:44:48
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -533,7 +533,14 @@ void marcador() {
 	}
 }
 
-begin_program
+void intro() {
+	for(int j=0;j<32;j++) {
+		for(int i=0;i<32;i++) {
+			if(j==0 || j==31 || i==0 || i==31) {
+				locate(i,j);
+				printc(rnd(GPARED,GPARED+3));
+
+begin
 	randomize(-1);
 	gdu_init();
 	screen_init();
@@ -559,6 +566,6 @@ begin_program
 		show;
 		pause(0.01);
 	}
-end_program
+end
 
 

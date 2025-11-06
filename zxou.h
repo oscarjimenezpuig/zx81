@@ -2,7 +2,7 @@
 ============================================================
   Fichero: zxou.h
   Creado: 18-10-2025
-  Ultima Modificacion: dimecres, 5 de novembre de 2025, 05:20:37
+  Ultima Modificacion: dimecres, 5 de novembre de 2025, 18:32:23
   oSCAR jIMENEZ pUIG                                       
 ============================================================
 */
@@ -99,8 +99,8 @@ void m_input();
 #define unplot(X,Y) z_plot((X),(Y),0)
 #define show m_output()
 #define listen m_input()
-#define begin_program void z_program() {
-#define end_program }
+#define begin void z_program() {
+#define end }
 
 void z_circle(byte cx,byte cy,byte radium);
 //dibuja un circulo centrado en cx,cy con radio radium
