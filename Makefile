@@ -81,7 +81,7 @@ check:
 
 #MAKEFILE VARIABLE
 
-NAME = prueba
-SCRS = zxou.c prueba.c
+NAME = sprite
+SCRS = zxou.c sprite.c
 INCLUDES = -lX11
 
